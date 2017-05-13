@@ -2,6 +2,7 @@ package main
 
 import (
 	"NSUbot/weather"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -12,6 +13,17 @@ var loggerAll *log.Logger
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	loggerAll.Print("URL: ", r.URL)
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		loggerAll.Print(err)
+	} else {
+		loggerAll.Print(string(b))
+	}
+	loggerAll.Print(r.Header)
+	loggerAll.Print(r.Form)
+	loggerAll.Print(r.RequestURI)
+	loggerAll.Print(r.Trailer)
+	loggerAll.Print("Конец\n\n")
 	w.Write([]byte("<page version=\"2.0\"><div>" + weather.CurrentWeather + "</div></page>"))
 }
 
